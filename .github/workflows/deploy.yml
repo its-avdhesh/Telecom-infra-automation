@@ -55,6 +55,7 @@ jobs:
               -e MONGO_URI="${{ secrets.MONGO_URI }}" \
               -e JWT_SECRET="${{ secrets.JWT_SECRET }}" \
               -e PORT=3002 \
-              ${{ secrets.ECR_REPOSITORY }}:latest
+              922778709371.dkr.ecr.eu-north-1.amazonaws.com/telecom-backend:latest
+
 
               
