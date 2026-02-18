@@ -44,9 +44,14 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          key_format: base64
+          envs: AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,AWS_REGION
           script: |
-            docker pull ${{ secrets.ECR_REPOSITORY }}:latest
+            # Authenticate Docker with ECR on the EC2 instance
+            aws ecr get-login-password --region $AWS_REGION \
+            | docker login --username AWS \
+            --password-stdin 922778709371.dkr.ecr.eu-north-1.amazonaws.com
+
+            docker pull 922778709371.dkr.ecr.eu-north-1.amazonaws.com/telecom-backend:latest
             docker stop telecom-backend || true
             docker rm telecom-backend || true
 
@@ -57,5 +62,3 @@ jobs:
               -e JWT_SECRET="${{ secrets.JWT_SECRET }}" \
               -e PORT=3002 \
               922778709371.dkr.ecr.eu-north-1.amazonaws.com/telecom-backend:latest
-
-
