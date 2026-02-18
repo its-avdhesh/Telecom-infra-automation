@@ -32,11 +32,11 @@ jobs:
       - name: Tag Image
         run: |
           docker tag telecom-backend:latest \
-          ${{ secrets.ECR_REPOSITORY }}:latest
+          922778709371.dkr.ecr.eu-north-1.amazonaws.com/telecom-backend:latest
 
       - name: Push Image to ECR
         run: |
-          docker push ${{ secrets.ECR_REPOSITORY }}:latest
+          docker push 922778709371.dkr.ecr.eu-north-1.amazonaws.com/telecom-backend:latest
 
       - name: Deploy on EC2
         uses: appleboy/ssh-action@v1.0.3
