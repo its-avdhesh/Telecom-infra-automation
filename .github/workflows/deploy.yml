@@ -56,5 +56,3 @@ jobs:
               -e JWT_SECRET="${{ secrets.JWT_SECRET }}" \
               -e PORT=3002 \
               ${{ secrets.ECR_REPOSITORY }}:latest
-
-              
