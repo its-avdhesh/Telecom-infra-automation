@@ -27,12 +27,7 @@ jobs:
           --password-stdin 922778709371.dkr.ecr.eu-north-1.amazonaws.com
 
       - name: Build Docker Image
-        run: |
-          docker buildx build \
-          --platform linux/amd64 \
-          -t telecom-backend:latest \
-          .
-          .
+        run: docker buildx build --platform linux/amd64 -t telecom-backend:latest .
 
       - name: Tag Image
         run: |
