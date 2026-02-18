@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services - IaC Telecom Automation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #000;
+            color: #00ff00;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+            border-bottom: 1px solid #00ff00;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .nav {
+            margin-top: 10px;
+        }
+
+        .nav a {
+            color: #00ff00;
+            text-decoration: none;
+            margin: 0 10px;
+            padding: 5px 10px;
+            border: 1px solid #00ff00;
+            transition: all 0.3s ease;
+        }
+
+        .nav a:hover {
+            background: #00ff00;
+            color: #000;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .coming-soon {
+            font-size: 32px;
+            color: #ffff00;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .services-list {
+            list-style: none;
+            margin: 30px 0;
+        }
+
+        .services-list li {
+            margin: 15px 0;
+            font-size: 18px;
+            opacity: 0.8;
+        }
+
+        .services-list li:before {
+            content: "> ";
+            color: #00ff00;
+        }
+
+        .logout-btn {
+            margin-top: 40px;
+            padding: 10px 20px;
+            background: #000;
+            border: 1px solid #ff0000;
+            color: #ff0000;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .logout-btn:hover {
+            background: #ff0000;
+            color: #000;
+        }
+
+        .status {
+            margin: 20px 0;
+            padding: 10px;
+            background: #111;
+            border: 1px solid #00ff00;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>IaC TELECOM AUTOMATION</h1>
+        <div class="nav">
+            <a href="/">Home</a>
+            <a href="/services">Services</a>
+            <a href="#" onclick="logout()">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="coming-soon">Services Coming Soon</div>
+        
+        <div class="status">
+            <p>Status: Authenticated</p>
+            <p>Access Level: Full</p>
+        </div>
+
+        <ul class="services-list">
+            <li>Network Management</li>
+            <li>Infrastructure Automation</li>
+            <li>Analytics Dashboard</li>
+            <li>Security Management</li>
+            <li>Cloud Integration</li>
+            <li>Configuration Management</li>
+        </ul>
+
+        <a href="#" class="logout-btn" onclick="logout()">Logout</a>
+    </div>
+
+    <script>
+        function logout() {
+            document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+            window.location.href = '/login';
+        }
+    </script>
+</body>
+</html>

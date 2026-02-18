@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - IaC Telecom Automation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #000;
+            color: #00ff00;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+            border-bottom: 1px solid #00ff00;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .nav {
+            margin-top: 10px;
+        }
+
+        .nav a {
+            color: #00ff00;
+            text-decoration: none;
+            margin: 0 10px;
+            padding: 5px 10px;
+            border: 1px solid #00ff00;
+            transition: all 0.3s ease;
+        }
+
+        .nav a:hover {
+            background: #00ff00;
+            color: #000;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-form {
+            background: #111;
+            border: 1px solid #00ff00;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-form h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 20px;
+            border-bottom: 1px solid #00ff00;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            background: #000;
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #00ff00;
+            box-shadow: 0 0 5px #00ff00;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #000;
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .btn:hover {
+            background: #00ff00;
+            color: #000;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid;
+            font-size: 12px;
+        }
+
+        .error {
+            border-color: #ff0000;
+            color: #ff0000;
+            background: #330000;
+        }
+
+        .success {
+            border-color: #00ff00;
+            color: #00ff00;
+            background: #003300;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 12px;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+        }
+
+        .back-link a {
+            color: #00ff00;
+            text-decoration: none;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>IaC TELECOM AUTOMATION</h1>
+        <div class="nav">
+            <a href="/">Home</a>
+            <a href="/register">Register</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="login-form">
+            <h2>LOGIN</h2>
+            <div id="loginMessage"></div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email:</label>
+                    <input type="email" id="loginEmail" name="email" required placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password:</label>
+                    <input type="password" id="loginPassword" name="password" required placeholder="Enter your password">
+                </div>
+                <button type="submit" class="btn">Login</button>
+                <div class="loading" id="loginLoading">Authenticating...</div>
+            </form>
+            <div class="back-link">
+                <p>Don't have an account? <a href="/register">Register here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const messageDiv = document.getElementById('loginMessage');
+            const loadingDiv = document.getElementById('loginLoading');
+            
+            messageDiv.innerHTML = '';
+            loadingDiv.style.display = 'block';
+            
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+                
+                const data = await response.json();
+                loadingDiv.style.display = 'none';
+                
+                if (response.ok) {
+                    messageDiv.innerHTML = '<div class="message success">Login successful! Redirecting...</div>';
+                    setTimeout(() => {
+                        window.location.href = '/services';
+                    }, 1500);
+                } else {
+                    messageDiv.innerHTML = `<div class="message error">${data.message || 'Login failed'}</div>`;
+                }
+            } catch (error) {
+                loadingDiv.style.display = 'none';
+                messageDiv.innerHTML = '<div class="message error">Network error. Please try again.</div>';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - IaC Telecom Automation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #000;
+            color: #00ff00;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+            border-bottom: 1px solid #00ff00;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .nav {
+            margin-top: 10px;
+        }
+
+        .nav a {
+            color: #00ff00;
+            text-decoration: none;
+            margin: 0 10px;
+            padding: 5px 10px;
+            border: 1px solid #00ff00;
+            transition: all 0.3s ease;
+        }
+
+        .nav a:hover {
+            background: #00ff00;
+            color: #000;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .register-form {
+            background: #111;
+            border: 1px solid #00ff00;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .register-form h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 20px;
+            border-bottom: 1px solid #00ff00;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            background: #000;
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #00ff00;
+            box-shadow: 0 0 5px #00ff00;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #000;
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .btn:hover {
+            background: #00ff00;
+            color: #000;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid;
+            font-size: 12px;
+        }
+
+        .error {
+            border-color: #ff0000;
+            color: #ff0000;
+            background: #330000;
+        }
+
+        .success {
+            border-color: #00ff00;
+            color: #00ff00;
+            background: #003300;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 12px;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+        }
+
+        .back-link a {
+            color: #00ff00;
+            text-decoration: none;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>IaC TELECOM AUTOMATION</h1>
+        <div class="nav">
+            <a href="/">Home</a>
+            <a href="/login">Login</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="register-form">
+            <h2>REGISTER</h2>
+            <div id="registerMessage"></div>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="registerName">Name:</label>
+                    <input type="text" id="registerName" name="name" required placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email:</label>
+                    <input type="email" id="registerEmail" name="email" required placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Password:</label>
+                    <input type="password" id="registerPassword" name="password" required placeholder="Create a password">
+                </div>
+                <div class="form-group">
+                    <label for="registerConfirmPassword">Confirm Password:</label>
+                    <input type="password" id="registerConfirmPassword" name="confirmPassword" required placeholder="Confirm your password">
+                </div>
+                <button type="submit" class="btn">Register</button>
+                <div class="loading" id="registerLoading">Creating account...</div>
+            </form>
+            <div class="back-link">
+                <p>Already have an account? <a href="/login">Login here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const userName = document.getElementById('registerName').value.trim();
+            const email = document.getElementById('registerEmail').value.trim();
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+            const messageDiv = document.getElementById('registerMessage');
+            const loadingDiv = document.getElementById('registerLoading');
+            
+            messageDiv.innerHTML = '';
+            
+            // Client-side validation for all required fields
+            if (!userName || !email || !password || !confirmPassword) {
+                messageDiv.innerHTML = '<div class="message error">All fields are required</div>';
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                messageDiv.innerHTML = '<div class="message error">Passwords do not match</div>';
+                return;
+            }
+            
+            loadingDiv.style.display = 'block';
+            
+            try {
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ userName, email, password })
+                });
+                
+                const data = await response.json();
+                loadingDiv.style.display = 'none';
+                
+                if (response.ok) {
+                    messageDiv.innerHTML = '<div class="message success">Registration successful! Redirecting to login...</div>';
+                    document.getElementById('registerForm').reset();
+                    setTimeout(() => {
+                        window.location.href = '/login';
+                    }, 2000);
+                } else {
+                    messageDiv.innerHTML = `<div class="message error">${data.message || 'Registration failed'}</div>`;
+                }
+            } catch (error) {
+                loadingDiv.style.display = 'none';
+                messageDiv.innerHTML = '<div class="message error">Network error. Please try again.</div>';
+            }
+        });
+    </script>
+</body>
+</html>
