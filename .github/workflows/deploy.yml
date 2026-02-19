@@ -39,16 +39,14 @@ jobs:
           docker push 922778709371.dkr.ecr.eu-north-1.amazonaws.com/telecom-backend:latest
 
       - name: Deploy on EC2
-        uses: webfactory/ssh-action@v0.1.1
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
-          ssh-key: ${{ secrets.EC2_SSH_KEY }}
-          timeout: 30s
-          command_timeout: 10m
+          key: ${{ secrets.EC2_SSH_KEY }}
+          debug: true
           envs: AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,AWS_REGION,MONGO_URI,JWT_SECRET
           script: |
-            # Authenticate Docker with ECR on EC2 instance
             aws ecr get-login-password --region $AWS_REGION \
             | docker login --username AWS \
             --password-stdin 922778709371.dkr.ecr.eu-north-1.amazonaws.com
