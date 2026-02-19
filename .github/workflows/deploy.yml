@@ -44,16 +44,19 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          debug: true
           envs: AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,AWS_REGION,MONGO_URI,JWT_SECRET
           script: |
             aws ecr get-login-password --region $AWS_REGION \
             | docker login --username AWS \
             --password-stdin 922778709371.dkr.ecr.eu-north-1.amazonaws.com
-            
-            docker pull 922778709371.dkr.ecr.eu-north-1.amazonaws.com/telecom-backend:latest
+
             docker stop telecom-backend || true
             docker rm telecom-backend || true
+
+            docker ps -q --filter "publish=3002" | xargs -r docker stop
+            docker ps -aq --filter "publish=3002" | xargs -r docker rm
+
+            docker pull 922778709371.dkr.ecr.eu-north-1.amazonaws.com/telecom-backend:latest
             docker run -d \
               --name telecom-backend \
               -p 3002:3002 \
