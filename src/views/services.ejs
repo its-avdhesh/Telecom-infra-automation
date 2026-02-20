@@ -116,6 +116,7 @@
         <div class="nav">
             <a href="/">Home</a>
             <a href="/services">Services</a>
+            <a href="/development">Development</a>
             <a href="#" onclick="logout()">Logout</a>
         </div>
     </div>
@@ -145,6 +146,33 @@
             document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
             window.location.href = '/login';
         }
+
+        // Check if user is authenticated and update navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simple check for JWT token in cookies
+            const cookies = document.cookie.split(';');
+            let isAuthenticated = false;
+            
+            for (let cookie of cookies) {
+                const [name, value] = cookie.trim().split('=');
+                if (name === 'token' && value) {
+                    isAuthenticated = true;
+                    break;
+                }
+            }
+            
+            // Update development link based on authentication
+            const devLink = document.querySelector('a[href="/development"]');
+            if (devLink) {
+                if (isAuthenticated) {
+                    devLink.style.display = 'inline-block';
+                    devLink.style.opacity = '1';
+                } else {
+                    devLink.style.display = 'none';
+                    devLink.style.opacity = '0.5';
+                }
+            }
+        });
     </script>
 </body>
 </html>

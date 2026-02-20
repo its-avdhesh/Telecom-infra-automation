@@ -165,6 +165,7 @@
         <div class="nav">
             <a href="/">Home</a>
             <a href="/login">Login</a>
+            <a href="/development">Development</a>
         </div>
     </div>
 
@@ -248,6 +249,35 @@
             } catch (error) {
                 loadingDiv.style.display = 'none';
                 messageDiv.innerHTML = '<div class="message error">Network error. Please try again.</div>';
+            }
+        });
+    </script>
+
+    <script>
+        // Check if user is authenticated and update navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simple check for JWT token in cookies
+            const cookies = document.cookie.split(';');
+            let isAuthenticated = false;
+            
+            for (let cookie of cookies) {
+                const [name, value] = cookie.trim().split('=');
+                if (name === 'token' && value) {
+                    isAuthenticated = true;
+                    break;
+                }
+            }
+            
+            // Update services link based on authentication
+            const servicesLink = document.querySelector('a[href="/services"]');
+            if (servicesLink) {
+                if (isAuthenticated) {
+                    servicesLink.style.display = 'inline-block';
+                    servicesLink.style.opacity = '1';
+                } else {
+                    servicesLink.style.display = 'none';
+                    servicesLink.style.opacity = '0.5';
+                }
             }
         });
     </script>

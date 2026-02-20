@@ -1,2 +1,14 @@
-node_modules
+# Dependencies
+node_modules/
+
+# Private keys
+github-deploy-key
+*.pem
+
+# Terraform state
+*.tfstate
+*.tfstate.backup
+.terraform/
+
+# Environment
 .env

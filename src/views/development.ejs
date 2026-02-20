@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How It Works — IaC Telecom Automation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #000;
+            color: #00ff00;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: #111;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid #00ff00;
+        }
+
+        .header h1 {
+            color: #00ff00;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .nav {
+            margin-top: 10px;
+        }
+
+        .nav a {
+            color: #00ff00;
+            text-decoration: none;
+            margin: 0 15px;
+            padding: 5px 10px;
+            border: 1px solid #00ff00;
+            transition: all 0.3s ease;
+        }
+
+        .nav a:hover {
+            background: #00ff00;
+            color: #000;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .title {
+            font-size: 32px;
+            color: #ffff00;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #00ff00;
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+        }
+
+        .content {
+            background: #111;
+            border: 1px solid #00ff00;
+            padding: 30px;
+            margin: 20px 0;
+        }
+
+        h2 {
+            color: #00ff00;
+            margin-bottom: 6px;
+            border-bottom: 1px solid #00ff00;
+            padding-bottom: 10px;
+            font-size: 16px;
+            letter-spacing: 2px;
+        }
+
+        .section-desc {
+            font-size: 12px;
+            color: #006600;
+            margin-bottom: 24px;
+            margin-top: 10px;
+        }
+
+        .nav {
+            text-align: center;
+            font-size: 13px;
+            color: #006600;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .process-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: #050f05;
+            border: 1px solid #00aa00;
+            border-radius: 3px;
+        }
+
+        .step-number {
+            color: #ffff00;
+            font-size: 18px;
+            font-weight: bold;
+            margin-right: 20px;
+            min-width: 30px;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            color: #00ff00;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .step-desc {
+            color: #006600;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .tech-list {
+            margin: 20px 0;
+            list-style: none;
+        }
+
+        .tech-list li {
+            margin: 10px 0;
+            padding: 10px;
+            background: #0a1a0a;
+            border-left: 3px solid #00ff00;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .tech-name {
+            color: #00ff00;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .flow-label {
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: #004400;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .pipeline {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .p-box {
+            border: 1px solid #00aa00;
+            background: #050f05;
+            padding: 12px;
+            text-align: center;
+            min-width: 100px;
+            margin: 2px;
+        }
+
+        .p-box.tf {
+            border-color: #ffaa00;
+            background: #0f0a00;
+        }
+
+        .p-box.tf .p-title { 
+            color: #ffaa00; 
+        }
+
+        .p-box.tf .p-sub { 
+            color: #553300; 
+        }
+
+        .p-box.done {
+            border-color: #00ff00;
+            background: #001a00;
+        }
+
+        .p-box.done .p-title { 
+            color: #00ff00; 
+        }
+
+        .p-icon { 
+            font-size: 16px; 
+            margin-bottom: 6px; 
+        }
+
+        .p-title { 
+            font-size: 10px; 
+            color: #00cc00; 
+            letter-spacing: 1px; 
+            font-weight: bold; 
+            line-height: 1.3; 
+        }
+
+        .p-sub { 
+            font-size: 9px; 
+            color: #004400; 
+            margin-top: 3px; 
+        }
+
+        .arr { 
+            color: #003300; 
+            font-size: 14px; 
+            padding: 0 3px; 
+            user-select: none; 
+        }
+
+        .arr.bright { 
+            color: #00aa00; 
+        }
+
+        .flow-divider { 
+            border: none; 
+            border-top: 1px dashed #002200; 
+            margin: 25px 0; 
+        }
+
+        .back-btn {
+            margin-top: 30px;
+            padding: 10px 20px;
+            background: #000;
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .back-btn:hover {
+            background: #00ff00;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>IaC TELECOM AUTOMATION</h1>
+        <div class="nav">
+            <a href="/">Home</a>
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+            <a href="/services">Services</a>
+            <a href="/development">Development</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="title">HOW IT WORKS</div>
+        <div class="subtitle">FULL AUTOMATION — FROM CODE TO CLOUD</div>
+
+        <div class="content">
+            <h2>Deployment Process</h2>
+            <div class="section-desc">
+                Two automated flows handle infrastructure and deployment. Run once to provision, then push code to deploy.
+            </div>
+
+            <!-- FLOW 1 -->
+            <div class="flow-label">Flow 1: Infrastructure Provisioning (Run Once with Terraform)</div>
+            <div class="pipeline">
+                <div class="p-box">
+                    <div class="p-icon">🏗️</div>
+                    <div class="p-title">TERRAFORM<br>APPLY</div>
+                    <div class="p-sub">run locally</div>
+                </div>
+                <span class="arr">→</span>
+                <div class="p-box tf">
+                    <div class="p-icon">☁️</div>
+                    <div class="p-title">AWS EC2<br>CREATED</div>
+                    <div class="p-sub">Ubuntu t3.micro</div>
+                </div>
+                <span class="arr">→</span>
+                <div class="p-box tf">
+                    <div class="p-icon">🔐</div>
+                    <div class="p-title">IAM ROLE<br>ATTACHED</div>
+                    <div class="p-sub">ECR access granted</div>
+                </div>
+                <span class="arr">→</span>
+                <div class="p-box tf">
+                    <div class="p-icon">🛡️</div>
+                    <div class="p-title">SECURITY<br>GROUP</div>
+                    <div class="p-sub">ports 22 + 3002</div>
+                </div>
+                <span class="arr">→</span>
+                <div class="p-box">
+                    <div class="p-icon">📜</div>
+                    <div class="p-title">USER_DATA.SH<br>RUNS ON BOOT</div>
+                    <div class="p-sub">installs docker + deploys</div>
+                </div>
+                <span class="arr bright">→</span>
+                <div class="p-box done">
+                    <div class="p-icon">✅</div>
+                    <div class="p-title">SERVER<br>READY</div>
+                    <div class="p-sub">app live: 3002</div>
+                </div>
+            </div>
+
+            <div class="flow-divider"></div>
+
+            <!-- FLOW 2 -->
+            <div class="flow-label">Flow 2: Continuous Deployment (Triggered on Every Git Push)</div>
+            <div class="pipeline">
+                <div class="p-box">
+                    <div class="p-icon">⌨️</div>
+                    <div class="p-title">GIT PUSH<br>TO MAIN</div>
+                    <div class="p-sub">developer pushes code</div>
+                </div>
+                <span class="arr">→</span>
+                <div class="p-box">
+                    <div class="p-icon">⚙️</div>
+                    <div class="p-title">GITHUB<br>ACTIONS</div>
+                    <div class="p-sub">workflow triggered</div>
+                </div>
+                <span class="arr">→</span>
+                <div class="p-box">
+                    <div class="p-icon">🐳</div>
+                    <div class="p-title">DOCKER<br>BUILD</div>
+                    <div class="p-sub">linux/amd64 image</div>
+                </div>
+                <span class="arr">→</span>
+                <div class="p-box">
+                    <div class="p-icon">📦</div>
+                    <div class="p-title">PUSH TO<br>AWS ECR</div>
+                    <div class="p-sub">image stored</div>
+                </div>
+                <span class="arr">→</span>
+                <div class="p-box">
+                    <div class="p-icon">🔑</div>
+                    <div class="p-title">SSH INTO<br>EC2</div>
+                    <div class="p-sub">via stored secret</div>
+                </div>
+                <span class="arr">→</span>
+                <div class="p-box">
+                    <div class="p-icon">🔄</div>
+                    <div class="p-title">PULL NEW<br>IMAGE</div>
+                    <div class="p-sub">stop old container</div>
+                </div>
+                <span class="arr bright">→</span>
+                <div class="p-box done">
+                    <div class="p-icon">✅</div>
+                    <div class="p-title">CODE<br>LIVE</div>
+                    <div class="p-sub">updated on 3002</div>
+                </div>
+            </div>
+
+            <h2>Technology Stack</h2>
+            <div class="section-desc">
+                Core technologies that power this automation pipeline.
+            </div>
+
+            <ul class="tech-list">
+                <li>
+                    <span class="tech-name">TERRAFORM</span>
+                    Infrastructure as Code - provisions and manages AWS resources declaratively
+                </li>
+                <li>
+                    <span class="tech-name">DOCKER</span>
+                    Containerization - packages app with dependencies into portable images
+                </li>
+                <li>
+                    <span class="tech-name">AWS ECR</span>
+                    Private Registry - stores and serves Docker images securely
+                </li>
+                <li>
+                    <span class="tech-name">GITHUB ACTIONS</span>
+                    CI/CD Pipeline - automates build, test, and deployment on every push
+                </li>
+                <li>
+                    <span class="tech-name">EC2 + USER_DATA</span>
+                    Auto-Deployment - server configures itself on first boot using shell script
+                </li>
+            </ul>
+        </div>
+
+        <a href="/" class="back-btn">← Back to Home</a>
+    </div>
+
+    <script>
+        // Check if user is authenticated and update navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simple check for JWT token in cookies
+            const cookies = document.cookie.split(';');
+            let isAuthenticated = false;
+            
+            for (let cookie of cookies) {
+                const [name, value] = cookie.trim().split('=');
+                if (name === 'token' && value) {
+                    isAuthenticated = true;
+                    break;
+                }
+            }
+            
+            // Update services link based on authentication
+            const servicesLink = document.querySelector('a[href="/services"]');
+            if (servicesLink) {
+                if (isAuthenticated) {
+                    servicesLink.style.display = 'inline-block';
+                    servicesLink.style.opacity = '1';
+                } else {
+                    servicesLink.style.display = 'none';
+                    servicesLink.style.opacity = '0.5';
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

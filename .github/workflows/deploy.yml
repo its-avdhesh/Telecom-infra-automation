@@ -38,29 +38,37 @@ jobs:
         run: |
           docker push 922778709371.dkr.ecr.eu-north-1.amazonaws.com/telecom-backend:latest
 
+      # ─────────────────────────────────────────
+      # SSH into EC2 → pull new image → redeploy
+      # ─────────────────────────────────────────
       - name: Deploy on EC2
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          envs: AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,AWS_REGION,MONGO_URI,JWT_SECRET
           script: |
-            aws ecr get-login-password --region $AWS_REGION \
+            # Login to ECR using EC2 IAM role (no credentials needed)
+            aws ecr get-login-password --region eu-north-1 \
             | docker login --username AWS \
             --password-stdin 922778709371.dkr.ecr.eu-north-1.amazonaws.com
 
+            # Stop and remove old container
             docker stop telecom-backend || true
             docker rm telecom-backend || true
 
-            docker ps -q --filter "publish=3002" | xargs -r docker stop
-            docker ps -aq --filter "publish=3002" | xargs -r docker rm
-
+            # Pull latest image
             docker pull 922778709371.dkr.ecr.eu-north-1.amazonaws.com/telecom-backend:latest
+
+            # Start new container
             docker run -d \
               --name telecom-backend \
+              --restart always \
               -p 3002:3002 \
-              -e MONGO_URI="${MONGO_URI}" \
-              -e JWT_SECRET="${JWT_SECRET}" \
+              -e MONGO_URI="${{ secrets.MONGO_URI }}" \
+              -e JWT_SECRET="${{ secrets.JWT_SECRET }}" \
               -e PORT=3002 \
               922778709371.dkr.ecr.eu-north-1.amazonaws.com/telecom-backend:latest
+
+            echo "✅ Deployment complete"
+            docker ps | grep telecom-backend
