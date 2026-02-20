@@ -39,11 +39,11 @@ jobs:
           docker push 922778709371.dkr.ecr.eu-north-1.amazonaws.com/telecom-backend:latest
 
       - name: Deploy on EC2
-        uses: appleboy/ssh-action@v1.0.3
+        uses: webfactory/ssh-action@v0.1.1
         with:
-          host: ${{ secrets.EC2_HOST }}
+          host: 51.20.77.133
           username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
+          ssh-key: ${{ secrets.EC2_SSH_KEY }}
           envs: AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,AWS_REGION,MONGO_URI,JWT_SECRET
           script: |
             aws ecr get-login-password --region $AWS_REGION \
