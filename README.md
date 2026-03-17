@@ -39,12 +39,9 @@ The system acts as a bridge between high-level telecom service requirements and 
 
 
 
-##  Group Members
-1. Ayushi Pal
-2. Aayushi Solanki
-3. Avdhesh Bhadoriya
-4. Ramji Soni
-5. Kanak Kumari
+##  Members
+1. Avdhesh Bhadoriya
+
    
 ##  Conclusion
 The **IaC Provisioning for Telecomm System** demonstrates the power of modern DevOps practices in mission-critical industries. By moving away from manual "snowflake" servers to version-controlled infrastructure, we have achieved a setup that is **90% faster** to deploy and significantly more resilient to failures. This project serves as a foundation for building self-healing telecom networks that can scale globally with a single click.
