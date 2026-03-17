@@ -1,8 +1,5 @@
 #  IaC Provisioning for Telecom System
 
-### **Group No:** D12 - Group 01  
-### **Project No:** DO-39
-
 ---
 
 ##  Project Description
